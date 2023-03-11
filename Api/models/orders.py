@@ -18,10 +18,16 @@ class Order(db.Model):
     __tablename__="orders"
     id=db.Column(db.Integer(), primary_key=True)
     size=db.Column(db.Enum(Sizes), default=Sizes.SMALL)
-    orderstatus=db.Column(db.Enum(OrderStatus), default=OrderStatus.PENDING)
+    quantity=db.Column(db.Integer(), nullable=False)
+    order_status=db.Column(db.Enum(OrderStatus), default=OrderStatus.PENDING)
     flavour =db.Column(db.String(), nullable=False)
     date_created=db.Column(db.DateTime(), default=datetime.utcnow)
-    user=db.Column(db.Integer, db.ForeignKey("users.id"))
+    customer=db.Column(db.Integer(), db.ForeignKey("users.id"))
 
     def __repr__(self) -> str:
         return f"<Order {self.id}>"
+    
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

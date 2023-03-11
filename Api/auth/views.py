@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource,fields
 from flask import request
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from ..models.users import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from http import HTTPStatus
@@ -59,6 +59,7 @@ class Signup(Resource):
 
 @auth_namespace.route("/login")
 class Login(Resource):
+    @auth_namespace.expect(login_model)
     def post(self):
         """
             Generate JWT token
@@ -78,6 +79,16 @@ class Login(Resource):
                 "refresh_token": refresh_token
             }
 
-            return response, HTTPStatus.CREATED
+            return response, 201
+
+@auth_namespace.route("/refresh")
+class Refresh(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        username= get_jwt_identity()
+
+        access_token= create_access_token(identity=username)
+
+        return {"access_token": access_token}, HTTPStatus.OK
 
 
