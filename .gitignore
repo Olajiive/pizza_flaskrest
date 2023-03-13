@@ -1,0 +1,8 @@
+__pycache__
+Api/__pycache__
+Api/auth/__pycache__
+Api/config/__pycache__
+Api/models/__pycache__
+Api/orders/__pycache__
+Api/utils/__pycache__
+env/
