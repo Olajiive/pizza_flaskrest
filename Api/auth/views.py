@@ -1,9 +1,10 @@
 from flask_restx import Namespace, Resource,fields
 from flask import request
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, unset_jwt_cookies
 from ..models.users import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from http import HTTPStatus
+from ..utils import db
 
 auth_namespace =Namespace("auth", description= "name space for authentication")
 
@@ -91,4 +92,12 @@ class Refresh(Resource):
 
         return {"access_token": access_token}, HTTPStatus.OK
 
+@auth_namespace.route("/logout")
+class Logout(Resource):
+    @jwt_required()
+    def post(self):
 
+        unset_jwt_cookies
+        db.session.commit()
+
+        return {"message": "successfully logged out"}, HTTPStatus.OK
