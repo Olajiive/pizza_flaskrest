@@ -29,6 +29,6 @@ class ProdConfig(Config):
 
 config_dict = {
     'dev': DevConfig,
-    'test': ProdConfig,
-    'prod':TestConfig
+    'test': TestConfig,
+    'prod':ProdConfig
 }

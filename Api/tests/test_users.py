@@ -32,10 +32,10 @@ class UserTestCase(unittest.TestCase):
         data = {
             "username": "Test User",
             "email": "testuser@gmail.com",
-            "password_hash": "password"
+            "password": "password"
         }
         response = self.client.post('/auth/signup', json=data )
         user = User.query.filter_by(email="testuser@gmail.com").first()
         assert user.username == "Test User"
 
-        assert response.status_cod == 201
+        assert response.status_code == 201
