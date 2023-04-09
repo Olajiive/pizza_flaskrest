@@ -6,3 +6,4 @@ Api/models/__pycache__
 Api/orders/__pycache__
 Api/utils/__pycache__
 env/
+.idea/
